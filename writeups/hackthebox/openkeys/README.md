@@ -55,9 +55,12 @@ another one, sets user with cookie
 Found http://10.10.10.199/auth_helpers/check_auth and downloaded it
 
 Executable file
+
+```
 ┌─[monty@parrot]─[~/ctfs/htb/boxes/openkeys/recon]─[Fri 01 Jan 2021 03:55:11 AM CST]
 └──╼ $file check_auth 
 check_auth: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /usr/libexec/ld.so, for OpenBSD, not stripped
+```
 
 String in exe - `auth_userokay`
 
