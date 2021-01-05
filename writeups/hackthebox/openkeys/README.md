@@ -1,14 +1,19 @@
 # Target
 
 OpenBSD
+
 CTF-CVE
+
 10.10.10.199
 
 # Recon
 
 `nmap target`
+
 `nmap -p- -T4 target`
+
 `dirb http://target`
+
 `sudo nmap -p 22,80 -sV -sC --script vuln target`
 
 Found intersting swap file for a authentication program? - http://10.10.10.199/includes/auth.php.swp
