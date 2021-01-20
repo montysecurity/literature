@@ -7,6 +7,12 @@
 - [bloodhound](https://github.com/BloodHoundAD/BloodHound)
 - [procdump](https://docs.microsoft.com/en-us/sysinternals/downloads/procdump)
 
+## basic powershell enumeration
+
+- Print all environment variables
+
+`gci env:`
+
 ## powershell script execution policy
 
 sometimes ps will not let you run ps scripts as a part of an execution policy, two possible ways around this would be piping the contents of the script to powershell.exe or just pasting it in a ps prompt
