@@ -91,9 +91,11 @@ for i in range(0,len(userlist)):
 	print(str("%s's password is %s" % (userlist[i],passlist[i])))
 ```
 
-admin and mango are users (case sensitive)
-mango's password is `h3mXK8RhU~f{]f5H`
-admin's password is `t9KcS3>!0B#2`
+Users Found (case sensitve)
+- admin
+- mango
+
+mango's password is `h3mXK8RhU~f{]f5H` and admin's password is `t9KcS3>!0B#2`
 
 `ssh:mango:h3mXK8RhU~f{]f5H`
 `local:admin:t9KcS3>!0B#2`
