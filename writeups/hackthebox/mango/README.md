@@ -13,12 +13,12 @@ nmap -sV -sC mango.htb
 
 ### HTTPS (443/TCP)
 
-Domain name in cert - staging-order.mango.htb
-Image refernce in source code - https://github.com/MangoDevelopers/mango-new-logo/raw/master/NewMango.jpg
-	MangoDB?
-Search Engine Screen
-	No reflective input
-	Googling "MongoDB SQL Injection" brings up a lot of results as NoSQL, testing those
+- Domain name in cert - staging-order.mango.htb
+- Image refernce in source code - https://github.com/MangoDevelopers/mango-new-logo/raw/master/NewMango.jpg
+	- MangoDB?
+- Search Engine Screen
+	- No reflective input
+	- Googling "MongoDB SQL Injection" brings up a lot of results as NoSQL, testing those
 
 It's using virtual host routing, put staging-order.mango.htb in /etc/hosts and visiting it returns a login screen
 
