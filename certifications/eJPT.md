@@ -1,1 +1,0 @@
-# eLearnSecurity Junior Penetration Tester
