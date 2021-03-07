@@ -402,6 +402,8 @@ so that passwd cron does not seem to be viable, I have access to all files invol
 
 ran linpeas from /root/ in container as root
 
+[reference](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS)
+
 ```
 [+] Modified interesting files in the last 5mins (limit 100)
 /opt/backups/backup.tar
