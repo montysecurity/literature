@@ -433,7 +433,7 @@ drwxr-xr-x 1 root root 4.0K Mar  7 02:57 ..
 ```
 
 - /root/container/backup/backup.tar (on host OS) = /opt/backup.tar (in container)
-- looks like the backup.sh script runs every minute
+- looks like the backup.sh script runs every minute (backup.tar last write time was 1 minute ago multiple times in a row when I ran `ls -lha`)
 - I can edit backup.sh, which appears to be ran by root on host OS
 
 Confirmed the host OS can reach me
