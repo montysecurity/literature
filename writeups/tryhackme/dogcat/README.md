@@ -177,7 +177,9 @@ using double qoutes in the payload broke the access log
 
 `syntax error, unexpected '&quot;cmd\&quot;]);?&gt;&quot;' (T_CONSTANT_ENCAPSED_STRING), expecting identifier (T_STRING) in <b>/var/log/apache2/access.log`
 
-going to reset the machine and try single quotes, reset the machine again and it is now at 10.10.5.7
+## ctf reset 2
+
+reset the machine again and it is now at 10.10.5.7
 
 Using burpsuite to URL encode and send payloads, curl is installed, using curl to download linper and run it
 
