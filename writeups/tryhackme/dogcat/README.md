@@ -242,13 +242,13 @@ system.container
 
 machine expired, taking a break
 
-## ctf reset 2
+## ctf reset 3
 
 new ip is 10.10.202.194
 
 bricked the access log and cannot figure out another LFI oppurtunity, restarting the host
 
-## ctf reset 3
+## ctf reset 4
 
 new ip is 10.10.121.150
 
@@ -317,7 +317,7 @@ Now need to find a container escape
     - basically any process/job that interfaces between host and container fs
 - obscure mount points? mounting a part of the host in the container? is that possible?
 
-## ctf reset 3
+## ctf reset 5
 
 new ip 10.10.42.190
 
@@ -379,7 +379,7 @@ if I can edit /var/backups/shadow, and monitor that file, then I should be able 
 
 can root in the container just `cat /etc/shadow`?
 
-## ctf reset 4
+## ctf reset 6
 
 new target IP 10.10.252.138
 
