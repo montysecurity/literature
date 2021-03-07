@@ -394,7 +394,8 @@ using regex to make the web exploit pretty
 
 so that passwd cron does not seem to be viable, I have access to all files involved and can just cat /etc/shadow, which does not provide anything useful
 
-*re-stablished foothold with php file - technique described above*
+*re-established foothold with php file - technique described above*
+
 *escalated to root with sudo - technique described above*
 
 ### privesc to root (on host OS)
