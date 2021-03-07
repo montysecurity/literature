@@ -396,7 +396,7 @@ so that passwd cron does not seem to be viable, I have access to all files invol
 
 *re-established foothold with php file - technique described above*
 
-*escalated to root with sudo - technique described above*
+*escalated to root (in container) with sudo - technique described above*
 
 ### privesc to root (on host OS)
 
