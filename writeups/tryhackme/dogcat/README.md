@@ -214,14 +214,14 @@ $flag_1 = "THM{Th1s_1s_N0t_4_Catdog_ab67edfa}"
 ?>
 ```
 
-got a pwncat session running and found the second flag
+got a [pwncat](https://github.com/calebstewart/pwncat) session running and found the second flag
 
 ```
 (remote) www-data@2673affc99e1:/var/www$ cat flag2_QMW7JvaY2LvK.txt 
 THM{LF1_t0_RC3_aec3fb}
 ```
 
-interesting pwncat info - looking for low-hanging privesc oppurtnities
+interesting pwncat info - looking for low-hanging privesc opportunities
 
 ```
 local) pwncat$ run enumerate                                                                       
