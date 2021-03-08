@@ -500,7 +500,7 @@ so root on the host OS did not execute linper because of something to do with fi
 
 ## recap
 
-Used `ping` to examine TTL responses and concluded the target is likely Linux. Manually enumerated GET parameters with the understanding that one was vulnerable to LFI from the CTF description. Used known files (other files on the website and /etc/passwd) as parameter vaules to enumerate the LFI vulnerability.
+Used `ping` to examine TTL responses and concluded the target is likely Linux. Manually enumerated GET parameters with the understanding that one was vulnerable to LFI from the CTF description. Used known files (other files on the website and /etc/passwd) as parameter values to enumerate the LFI vulnerability.
 
 After confirming the vulnerability, used it and a PHP filter to pull the source code of the website. Used the information from there and the LFI to read the Apache access log and implant a bit of PHP code that takes the parameter "c" and executes it as a shell command every time we view the access log.
 
