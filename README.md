@@ -9,6 +9,3 @@ Write Ups for various CTFs hosted on:
 - [Hack The Box](https://hackthebox.eu)
 - [TryHackMe](https://tryhackme.com/)
 - [Under The Wire](https://www.underthewire.tech/)
-
-## certifications
-My thoughts on some of the certifications I currently hold. The goal is to provide the context of my experience going into each on in the most tangible/numerical way possible. ("Experience going in" is not the determining factor of passing or failing; however, it is a benchmark I would have liked to have so I would also like to provide it)
