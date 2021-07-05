@@ -71,4 +71,4 @@ If the target does not have aescrypt, the following are shell commands to get it
 
 ## meterpreter
 
-run post/multi/manage/autoroute
+    run post/multi/manage/autoroute

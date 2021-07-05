@@ -9,9 +9,9 @@
 
 ## basic powershell enumeration
 
-- Print all environment variables
-
-`gci env:`
+Print all environment variables
+	
+	gci env:
 
 ## powershell script execution policy
 
@@ -29,4 +29,4 @@ You can find the PID using *ps* (it is the column immediately left of the proces
 
 ## batch scripts
 
-`gci -file -force -r . \*.bat`
+	gci -file -force -r . \*.bat

